@@ -120,6 +120,18 @@ int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out
 
     mkdir(dir,0755);
 
+    char tmp[512];
+    snprintf(tmp,sizeof(tmp),"%s.tmp",path);
+
+    int fd=open(tmp,O_CREAT|O_WRONLY|O_TRUNC,0644);
+    write(fd,buffer,total_len);
+    fsync(fd);
+    close(fd);
+
+    rename(tmp,path);
+    free(buffer);
+    return 0;
+
 // Read an object from the store.
 //
 // Steps:
