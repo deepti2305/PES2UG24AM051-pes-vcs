@@ -111,6 +111,15 @@ int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out
         return 0;
     }
 
+    char path[512];
+    object_path(id_out,path,sizeof(path));
+
+    char dir[512];
+    strncpy(dir,path,strlen(path)-strlen(strrchr(path,'/')));
+    dir[strlen(path)-strlen(strrchr(path,'/'))]='\0';
+
+    mkdir(dir,0755);
+
 // Read an object from the store.
 //
 // Steps:
