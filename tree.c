@@ -149,6 +149,16 @@ int tree_from_index(ObjectID *id_out) {
         else strcpy(e->name,index.entries[i].path);
     }
 
+    void *data;
+    size_t len;
+
+    tree_serialize(&tree,&data,&len);
+
+    object_write(OBJ_TREE,data,len,id_out);
+
+    free(data);
+    return 0;
+
     (void)id_out;
     return -1;
 }
