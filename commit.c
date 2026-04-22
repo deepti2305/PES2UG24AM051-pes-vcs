@@ -202,6 +202,16 @@ int commit_create(const char *message, ObjectID *commit_id_out) {
 
     ObjectID parent;
     int has_parent=(head_read(&parent)==0);
+
+    Commit c;
+    c.tree=tree_id;
+    c.has_parent=has_parent;
+    if(has_parent) c.parent=parent;
+
+    strcpy(c.author,pes_author());
+    c.timestamp=time(NULL);
+    strcpy(c.message,message);
+
     (void)message; (void)commit_id_out;
     return -1;
 }
